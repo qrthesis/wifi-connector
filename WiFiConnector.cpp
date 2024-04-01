@@ -1,28 +1,26 @@
 #include "WiFiConnector.h"
 
-WiFiConnector::WiFiConnector(HardwareSerial& serial) : _esp8266(serial) {
+WiFiConnector::WiFiConnector(HardwareSerial& serial) : _esp8266() {
     _esp8266.begin(9600);
 }
 
-bool WiFiConnector::connect(const char* ssid, const char* password) {
+bool WiFiConnector::connect(String ssid, String password) {
     _esp8266.println("AT+RST");
     if (!waitForResponse("OK", 1000)) return false;
     
     if (!sendCommand("AT+CWMODE=1", "OK", 1000)) return false;
     
-    char cmd[100]; // Adjust the size according to your requirement
-    snprintf(cmd, sizeof(cmd), "AT+CWJAP=\"%s\",\"%s\"", ssid, password);
-    if (!sendCommand(cmd, "OK", 10000)) return false; // Increased timeout to 10 seconds, adjust if necessary
+    if (!sendCommand("AT+CWJAP=\"" + ssid + "\",\"" + password + "\"", "OK", 2000)) return false; // Increased timeout to 10 seconds, adjust if necessary
     
     return true;
 }
 
-bool WiFiConnector::sendCommand(const char* command, const char* expectedResponse, int timeout) {
+bool WiFiConnector::sendCommand(String command, String expectedResponse, int timeout) {
     _esp8266.println(command);
     return waitForResponse(expectedResponse, timeout);
 }
 
-bool WiFiConnector::waitForResponse(const char* expectedResponse, int timeout) {
+bool WiFiConnector::waitForResponse(String expectedResponse, int timeout) {
     unsigned long startTime = millis();
     char responseBuffer[100]; // Adjust the size according to your requirement
     int responseLength = strlen(expectedResponse);
