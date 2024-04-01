@@ -6,7 +6,7 @@
 
 class WiFiConnector {
 public:
-    WiFiConnector(int esp8266TxPin, int esp8266RxPin);
+    WiFiConnector(HardwareSerial& serial);
     bool connect(const char* ssid, const char* password);
     bool isConnected(); // Declaration of the new method
 

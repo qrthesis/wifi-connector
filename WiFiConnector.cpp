@@ -1,6 +1,6 @@
 #include "WiFiConnector.h"
 
-WiFiConnector::WiFiConnector(int esp8266TxPin, int esp8266RxPin) : _esp8266(esp8266TxPin, esp8266RxPin) {
+WiFiConnector::WiFiConnector(HardwareSerial& serial) : _esp8266(serial) {
     _esp8266.begin(9600);
 }
 
