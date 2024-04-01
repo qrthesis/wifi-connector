@@ -40,3 +40,9 @@ bool WiFiConnector::waitForResponse(const char* expectedResponse, int timeout) {
     }
     return false; // Timeout occurred
 }
+
+bool WiFiConnector::isConnected() {
+    // Check if the ESP8266 is connected to the WiFi network
+    _esp8266.println("AT+CWJAP?");
+    return waitForResponse("OK", 1000); // Assuming "OK" means connected in the response
+}
