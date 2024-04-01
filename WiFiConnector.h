@@ -12,6 +12,7 @@ public:
 private:
     SoftwareSerial _esp8266;
     bool sendCommand(const char* command, const char* expectedResponse, int timeout);
+    bool waitForResponse(const char* expectedResponse, int timeout); // Declaration added here
 };
 
 #endif
